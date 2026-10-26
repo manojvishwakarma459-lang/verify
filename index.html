@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certificate Verification | U-TECH CAD CAM Solutions</title>
+<meta name="description" content="Verify the authenticity of certificates issued by U-TECH CAD CAM Solutions, Vasai East.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#3B1E6E;--purple-2:#5A3596;--gold:#C9A227;--gold-soft:#F6EDCF;--ink:#1d1a24;--muted:#6b6577;--bg:#f6f4fa;--card:#fff;--line:#e6e1ef;--ok:#1f8a4c;--ok-bg:#e8f6ee;--bad:#b3261e;--bad-bg:#fdecea;--warn:#9a6700;--warn-bg:#fff6e0}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
+header{background:linear-gradient(135deg,var(--purple),var(--purple-2));color:#fff;padding:22px 16px 70px;text-align:center;border-bottom:4px solid var(--gold)}
+.brand{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.brand img{height:64px;width:auto}
+.mono{display:none;width:58px;height:58px;border-radius:12px;background:var(--gold);color:var(--purple);font:700 22px Cinzel,serif;align-items:center;justify-content:center}
+.brand h1{font:700 clamp(20px,4.5vw,28px)/1.1 Cinzel,serif;margin:0;letter-spacing:.5px}
+.brand p{margin:4px 0 0;font-size:12px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.wrap{max-width:640px;width:100%;margin:-48px auto 0;padding:0 16px;flex:1}
+.card{background:var(--card);border-radius:16px;box-shadow:0 10px 30px rgba(59,30,110,.12);padding:26px;border:1px solid var(--line)}
+h2{font:700 20px Cinzel,serif;color:var(--purple);margin:0 0 6px;text-align:center}
+.sub{text-align:center;color:var(--muted);font-size:14px;margin:0 0 20px}
+form{display:flex;gap:8px}
+input{flex:1;min-width:0;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;font:500 16px "JetBrains Mono",monospace;text-transform:uppercase}
+input:focus{outline:none;border-color:var(--purple)}
+button{padding:0 20px;border:0;border-radius:10px;background:var(--purple);color:#fff;font:600 15px Inter,sans-serif;cursor:pointer}
+button:hover{background:var(--purple-2)}
+#result{margin-top:22px}
+.status{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;font-weight:600}
+.status svg{flex:none}
+.status.ok{background:var(--ok-bg);color:var(--ok)}
+.status.bad{background:var(--bad-bg);color:var(--bad)}
+.status.warn{background:var(--warn-bg);color:var(--warn)}
+.status small{display:block;font-weight:400;color:var(--muted);margin-top:2px}
+.details{margin-top:16px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.details .name{background:var(--gold-soft);padding:16px;text-align:center;border-bottom:1px solid var(--line)}
+.details .name span{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.details .name strong{font:700 22px Cinzel,serif;color:var(--purple)}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr}
+dt,dd{margin:0;padding:11px 16px;border-bottom:1px solid var(--line);font-size:14px}
+dt{color:var(--muted)}
+dd{font-weight:600;text-align:right}
+dl > :nth-last-child(-n+2){border-bottom:0}
+.mono-txt{font-family:"JetBrains Mono",monospace;font-weight:500}
+.loading{text-align:center;color:var(--muted);padding:14px}
+.note{font-size:12.5px;color:var(--muted);margin-top:16px;text-align:center;line-height:1.5}
+footer{text-align:center;font-size:12.5px;color:var(--muted);padding:26px 16px;line-height:1.7}
+footer a{color:var(--purple);text-decoration:none}
+@media print{header{padding-bottom:22px}.wrap{margin-top:16px}form,.note{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <img src="assets/logo.png" alt="U-TECH crest" onerror="this.style.display='none';document.querySelector('.mono').style.display='flex'">
+    <div class="mono">UT</div>
+    <div>
+      <h1>U-TECH CAD CAM Solutions</h1>
+      <p>Shaping Skills · Building Future</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="card">
+    <h2>Certificate Verification</h2>
+    <p class="sub">Scan the QR code on the certificate, or enter the Certificate ID below.</p>
+    <form id="f">
+      <input id="cid" placeholder="e.g. UT26-K7M3QX" autocomplete="off" spellcheck="false" aria-label="Certificate ID">
+      <button type="submit">Verify</button>
+    </form>
+    <div id="result" aria-live="polite"></div>
+    <p class="note">Records are stored encrypted. Certificate details can only be viewed with a valid Certificate ID.</p>
+  </div>
+</main>
+
+<footer>
+  ISO 9001:2015 Certified Institute · Vasai East, Palghar, Mumbai<br>
+  <a href="tel:+919309430169">+91 93094 30169</a> · <a href="mailto:admin@u-tech.in">admin@u-tech.in</a> · <a href="https://www.u-tech.in">www.u-tech.in</a>
+</footer>
+
+<script>
+const enc = s => new TextEncoder().encode(s);
+const norm = s => (s || "").trim().toUpperCase().replace(/\s+/g, "");
+const hex = b => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+let DB = null;
+async function loadDB() {
+  if (DB) return DB;
+  const r = await fetch("data/certificates.json?v=" + Date.now(), { cache: "no-store" });
+  if (!r.ok) throw new Error("db");
+  return (DB = await r.json());
+}
+
+async function lookup(id) {
+  const db = await loadDB();
+  const key = hex(await crypto.subtle.digest("SHA-256", enc("UTECH-LOOKUP|" + id)));
+  const rec = db.records[key];
+  if (!rec) return null;
+  const raw = await crypto.subtle.digest("SHA-256", enc("UTECH-KEY|" + id));
+  const k = await crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
+  const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(rec.iv) }, k, unb64(rec.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+
+const ICON = {
+  ok: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>',
+  bad: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>',
+  warn: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg>'
+};
+
+function fmtDate(d) {
+  const t = new Date(d);
+  return isNaN(t) ? d : t.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+async function verify(raw) {
+  const id = norm(raw);
+  const out = document.getElementById("result");
+  if (!id) { out.innerHTML = ""; return; }
+  out.innerHTML = '<div class="loading">Checking records…</div>';
+  history.replaceState(null, "", "?id=" + encodeURIComponent(id));
+  let c;
+  try { c = await lookup(id); }
+  catch (e) { out.innerHTML = `<div class="status warn">${ICON.warn}<div>Verification service unavailable<small>Please try again shortly or contact the institute.</small></div></div>`; return; }
+
+  if (!c) {
+    out.innerHTML = `<div class="status bad">${ICON.bad}<div>No certificate found<small>ID <span class="mono-txt">${esc(id)}</span> does not match any certificate issued by U-TECH.</small></div></div>`;
+    return;
+  }
+  const revoked = (c.status || "").toLowerCase() === "revoked";
+  const rows = [
+    ["Certificate ID", `<span class="mono-txt">${esc(id)}</span>`],
+    ["Course", esc(c.course)],
+    c.duration && ["Duration", esc(c.duration)],
+    c.grade && ["Grade / Result", esc(c.grade)],
+    c.start_date && ["Course Period", `${esc(fmtDate(c.start_date))} – ${esc(fmtDate(c.end_date || ""))}`],
+    ["Date of Issue", esc(fmtDate(c.issue_date))]
+  ].filter(Boolean).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+
+  out.innerHTML = `
+    <div class="status ${revoked ? "bad" : "ok"}">${revoked ? ICON.bad : ICON.ok}
+      <div>${revoked ? "Certificate revoked" : "Verified — genuine certificate"}
+      <small>${revoked ? "This certificate is no longer valid." : "Issued by U-TECH CAD CAM Solutions."}</small></div></div>
+    <div class="details">
+      <div class="name"><span>Awarded to</span><strong>${esc(c.name)}</strong></div>
+      <dl>${rows}</dl>
+    </div>`;
+}
+
+document.getElementById("f").addEventListener("submit", e => { e.preventDefault(); verify(document.getElementById("cid").value); });
+const q = new URLSearchParams(location.search).get("id");
+if (q) { document.getElementById("cid").value = norm(q); verify(q); }
+</script>
+</body>
+</html>
