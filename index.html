@@ -14,7 +14,7 @@
 body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
 header{background:linear-gradient(135deg,var(--purple),var(--purple-2));color:#fff;padding:22px 16px 70px;text-align:center;border-bottom:4px solid var(--gold)}
 .brand{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
-.brand img{height:64px;width:auto}
+.brand img{height:84px;width:auto;background:#fff;border-radius:10px;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .mono{display:none;width:58px;height:58px;border-radius:12px;background:var(--gold);color:var(--purple);font:700 22px Cinzel,serif;align-items:center;justify-content:center}
 .brand h1{font:700 clamp(20px,4.5vw,28px)/1.1 Cinzel,serif;margin:0;letter-spacing:.5px}
 .brand p{margin:4px 0 0;font-size:12px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
@@ -66,9 +66,9 @@ footer a{color:var(--purple);text-decoration:none}
 <main class="wrap">
   <div class="card">
     <h2>Certificate Verification</h2>
-    <p class="sub">Scan the QR code on the certificate, or enter the Certificate ID below.</p>
+    <p class="sub">Scan the QR code on the certificate, or enter the Certificate No. and verification code printed beside it.</p>
     <form id="f">
-      <input id="cid" placeholder="e.g. UT26-K7M3QX" autocomplete="off" spellcheck="false" aria-label="Certificate ID">
+      <input id="cid" placeholder="UTCCS-2026-2058-XXXXXX" autocomplete="off" spellcheck="false" aria-label="Certificate ID">
       <button type="submit">Verify</button>
     </form>
     <div id="result" aria-live="polite"></div>
@@ -83,7 +83,9 @@ footer a{color:var(--purple);text-decoration:none}
 
 <script>
 const enc = s => new TextEncoder().encode(s);
-const norm = s => (s || "").trim().toUpperCase().replace(/\s+/g, "");
+const norm = s => (s || "").toUpperCase().replace(/[\s|\/_.,:]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+const certNo = id => { const p = id.split("-"); return p.length >= 4 ? p.slice(0, 3).join(" | ") : id; };
+const vcode = id => { const p = id.split("-"); return p.length >= 4 ? p[p.length - 1] : ""; };
 const hex = b => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
 const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -129,15 +131,17 @@ async function verify(raw) {
   catch (e) { out.innerHTML = `<div class="status warn">${ICON.warn}<div>Verification service unavailable<small>Please try again shortly or contact the institute.</small></div></div>`; return; }
 
   if (!c) {
-    out.innerHTML = `<div class="status bad">${ICON.bad}<div>No certificate found<small>ID <span class="mono-txt">${esc(id)}</span> does not match any certificate issued by U-TECH.</small></div></div>`;
+    out.innerHTML = `<div class="status bad">${ICON.bad}<div>No certificate found<small><span class="mono-txt">${esc(id)}</span> does not match any certificate issued by U-TECH. Check the Certificate No. and code.</small></div></div>`;
     return;
   }
   const revoked = (c.status || "").toLowerCase() === "revoked";
   const rows = [
-    ["Certificate ID", `<span class="mono-txt">${esc(id)}</span>`],
+    ["Certificate No.", `<span class="mono-txt">${esc(certNo(id))}</span>`],
+    vcode(id) && ["Verification Code", `<span class="mono-txt">${esc(vcode(id))}</span>`],
     ["Course", esc(c.course)],
+    c.module && ["Course Module", esc(c.module)],
     c.duration && ["Duration", esc(c.duration)],
-    c.grade && ["Grade / Result", esc(c.grade)],
+    c.grade && ["Grade", esc(c.grade)],
     c.start_date && ["Course Period", `${esc(fmtDate(c.start_date))} – ${esc(fmtDate(c.end_date || ""))}`],
     ["Date of Issue", esc(fmtDate(c.issue_date))]
   ].filter(Boolean).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
