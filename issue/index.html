@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Issue Certificates | U-TECH</title>
+<link rel="icon" href="../assets/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="lib/qrcode.js"></script>
+<script src="lib/jszip.min.js"></script>
+<script src="lib/pdf.min.js"></script>
+<script src="lib/pdf.worker.min.js"></script>
+<script src="lib/pdf-lib.min.js"></script>
+<style>
+:root{--purple:#3B1E6E;--purple-2:#5A3596;--gold:#C9A227;--line:#e6e1ef;--muted:#6b6577;--bg:#f6f4fa;--ok:#1f8a4c;--bad:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:#1d1a24}
+header{background:linear-gradient(135deg,var(--purple),var(--purple-2));color:#fff;padding:16px 20px;border-bottom:4px solid var(--gold);display:flex;align-items:center;gap:14px}
+header img{height:52px;background:#fff;border-radius:8px;padding:3px}
+header h1{font:700 20px Cinzel,serif;margin:0}
+header p{margin:2px 0 0;font-size:12px;color:var(--gold);letter-spacing:1px}
+header .gear{margin-left:auto;background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:7px 12px;font:500 13px Inter;cursor:pointer}
+main{max-width:920px;margin:0 auto;padding:22px 16px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px}
+h2{font-size:17px;margin:0 0 6px;color:var(--purple)}
+.hint{font-size:13.5px;color:var(--muted);margin:0 0 12px;line-height:1.55}
+ol.hint{padding-left:20px}
+code{font:12.5px "JetBrains Mono",monospace;background:#f1edf8;padding:2px 5px;border-radius:4px}
+input[type=text],input[type=password],input[type=date]{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:8px;font:14px Inter}
+button{padding:11px 18px;border:0;border-radius:9px;background:var(--purple);color:#fff;font:600 14px Inter;cursor:pointer}
+button.alt{background:#fff;color:var(--purple);border:1.5px solid var(--purple)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.big{width:100%;padding:16px;font-size:17px;background:var(--gold);color:#1d1a24}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.drop{display:block;border:2.5px dashed var(--purple-2);border-radius:14px;padding:38px 20px;text-align:center;cursor:pointer;background:#faf8fe;color:var(--purple)}
+.drop.over{background:#efe8fb}
+.drop b{font-size:18px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{color:var(--muted);font-weight:600;font-size:12px}
+td.x{width:30px;text-align:center;color:var(--bad);cursor:pointer;font-weight:700}
+.tw{overflow-x:auto}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:20px}
+.tag.new{background:#e8f6ee;color:var(--ok)}.tag.dup{background:#fdecea;color:var(--bad)}
+.steps{list-style:none;padding:0;margin:0}
+.steps li{padding:7px 0;font-size:14.5px;color:var(--muted)}
+.steps li.on{color:#1d1a24;font-weight:600}.steps li.done{color:var(--ok)}.steps li.err{color:var(--bad);font-weight:600}
+.done-box{background:#e8f6ee;border:1px solid #bfe3cd;border-radius:12px;padding:16px;color:#14532d}
+.done-box a{color:var(--purple)}
+.err-box{background:#fdecea;border:1px solid #f3c2bd;border-radius:12px;padding:14px;color:#7f1d1d;font-size:14px}
+details summary{cursor:pointer;color:var(--purple);font-weight:600;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 12px;margin-top:10px}.span2{grid-column:span 2}.span3{grid-column:span 3}
+label{font-size:12.5px;font-weight:600;display:block;margin-bottom:3px}
+.hidden{display:none}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.span2,.span3{grid-column:auto}}
+</style>
+</head>
+<body>
+<header>
+  <img src="../assets/logo.png" alt="" onerror="this.remove()">
+  <div><h1>Issue Certificates</h1><p>U-TECH CAD CAM SOLUTIONS · QR VERIFICATION</p></div>
+  <button class="gear" id="gear">⚙ Settings</button>
+</header>
+<main>
+
+<!-- One-time setup -->
+<section class="card hidden" id="setup">
+  <h2>One-time setup: connect to GitHub</h2>
+  <p class="hint">This lets the tool publish certificates to <b>verify.u-tech.in</b> by itself. You do this once on this computer.</p>
+  <ol class="hint">
+    <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank">github.com/settings/personal-access-tokens/new</a> (signed in to GitHub).</li>
+    <li><b>Token name:</b> <code>U-TECH certificates</code> · <b>Expiration:</b> choose <i>Custom</i> → 1 year (or No expiration).</li>
+    <li><b>Repository access:</b> <i>Only select repositories</i> → choose <code>verify</code>.</li>
+    <li><b>Permissions → Repository permissions → Contents:</b> set to <i>Read and write</i>.</li>
+    <li>Click <b>Generate token</b>, copy it, and paste it below.</li>
+  </ol>
+  <input type="password" id="tok" placeholder="github_pat_…" autocomplete="off">
+  <div class="row"><button id="saveTok">Save &amp; test</button><span id="tokMsg" class="hint" style="margin:0"></span></div>
+  <p class="hint" style="margin-top:12px">The token is stored only in this browser on this computer. It can only change the <code>verify</code> repository.</p>
+</section>
+
+<!-- Step 1 -->
+<section class="card" id="main1">
+  <h2>1 · Drop the certificate PDFs</h2>
+  <p class="hint">Export from Canva as usual, then drop them here — one or many. Details are read automatically.</p>
+  <label class="drop" id="drop"><input type="file" id="pdfs" accept="application/pdf" multiple hidden><b>Choose certificate PDFs</b><br><span class="hint">or drag &amp; drop them here</span></label>
+  <div id="readMsg" class="hint" style="margin-top:10px"></div>
+  <div class="tw"><table id="tbl" class="hidden"><thead><tr><th>Cert No.</th><th>Name</th><th>Course</th><th>Grade</th><th>Date</th><th>Status</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
+  <details style="margin-top:14px"><summary>+ Add a student without a PDF (badge only)</summary>
+    <div class="grid">
+      <div><label>Certificate No.</label><input type="text" id="f_no" placeholder="2060"></div>
+      <div class="span2"><label>Student name</label><input type="text" id="f_name"></div>
+      <div><label>Date of issuance</label><input type="date" id="f_date"></div>
+      <div class="span2"><label>Course</label><input type="text" id="f_course" placeholder="SOLIDWORKS 2025"></div>
+      <div><label>Grade</label><input type="text" id="f_grade"></div>
+      <div class="span2"><label>Course module (optional)</label><input type="text" id="f_module"></div>
+    </div>
+    <div class="row"><button class="alt" id="addManual">Add to list</button></div>
+  </details>
+</section>
+
+<!-- Step 2 -->
+<section class="card" id="main2">
+  <h2>2 · Issue</h2>
+  <p class="hint">Publishes the certificates to the verification website and downloads the finished certificates with QR codes.</p>
+  <button class="big" id="issue" disabled>Issue certificates</button>
+  <ul class="steps hidden" id="steps">
+    <li data-s="db">Reading existing certificates</li>
+    <li data-s="enc">Creating secure QR codes</li>
+    <li data-s="pub">Publishing to verify.u-tech.in</li>
+    <li data-s="pdf">Preparing certificates</li>
+  </ul>
+  <div id="result" style="margin-top:14px"></div>
+</section>
+
+</main>
+
+<script>
+const REPO = "manojvishwakarma459-lang/verify", DBPATH = "data/certificates.json", SITE = "https://verify.u-tech.in/", PREFIX = "UTCCS";
+const $ = s => document.querySelector(s);
+const enc = s => new TextEncoder().encode(s);
+const hex = b => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
+const b64 = u => { let s = ""; const a = new Uint8Array(u); for (let i = 0; i < a.length; i += 0x8000) s += String.fromCharCode(...a.subarray(i, i + 0x8000)); return btoa(s); };
+const sha = async s => hex(await crypto.subtle.digest("SHA-256", enc(s)));
+const norm = s => (s || "").toUpperCase().replace(/[\s|\/_.,:]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");   // must match the verify page
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store = { get: k => { try { return localStorage.getItem(k) || ""; } catch { return ""; } }, set: (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch {} } };
+
+// ---------- GitHub ----------
+const gh = (path, opt = {}) => fetch("https://api.github.com/repos/" + REPO + path, {
+  ...opt, headers: { Authorization: "Bearer " + store.get("utech_gh"), Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", ...(opt.headers || {}) }
+});
+async function getDB() {
+  const meta = await gh("/contents/" + DBPATH + "?ref=main&t=" + Date.now(), { cache: "no-store" });
+  if (meta.status === 404) return { db: { issuer: "U-TECH CAD CAM Solutions", version: 2, records: {}, issued: [] }, sha: null };
+  if (!meta.ok) throw new Error(meta.status === 401 || meta.status === 403 ? "GitHub token is invalid or expired — open ⚙ Settings." : "Could not read from GitHub (" + meta.status + ").");
+  const m = await meta.json();
+  const raw = await gh("/contents/" + DBPATH + "?ref=main&t=" + Date.now(), { cache: "no-store", headers: { Accept: "application/vnd.github.raw" } });
+  const db = await raw.json(); db.issued = db.issued || []; db.records = db.records || {};
+  return { db, sha: m.sha };
+}
+async function putDB(db, shaPrev, msg) {
+  const body = { message: msg, content: b64(enc(JSON.stringify(db, null, 1))), branch: "main" };
+  if (shaPrev) body.sha = shaPrev;
+  const r = await gh("/contents/" + DBPATH, { method: "PUT", body: JSON.stringify(body), headers: { "Content-Type": "application/json" } });
+  if (r.status === 409 || r.status === 422) throw new Error("RETRY");
+  if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? "GitHub token cannot write — check it has Contents: Read and write on the verify repo (⚙ Settings)." : "Publishing failed (" + r.status + ").");
+}
+
+// ---------- Settings ----------
+const showSetup = on => { $("#setup").classList.toggle("hidden", !on); };
+$("#gear").onclick = () => showSetup($("#setup").classList.contains("hidden"));
+if (!store.get("utech_gh")) showSetup(true);
+$("#saveTok").onclick = async () => {
+  const t = $("#tok").value.trim(); if (!t) return;
+  store.set("utech_gh", t); $("#tokMsg").textContent = "Testing…";
+  try {
+    const r = await gh(""); const j = await r.json();
+    if (!r.ok) throw 0;
+    if (!j.permissions || !j.permissions.push) { $("#tokMsg").innerHTML = "✘ Token can read but not write. Set <b>Contents: Read and write</b>."; return; }
+    $("#tokMsg").textContent = "✔ Connected. You're ready."; $("#tok").value = "";
+    setTimeout(() => showSetup(false), 1200);
+  } catch { store.set("utech_gh", ""); $("#tokMsg").textContent = "✘ That token didn't work. Check the steps and try again."; }
+};
+
+// ---------- Reading PDFs ----------
+pdfjsLib.GlobalWorkerOptions.workerSrc = "lib/pdf.worker.min.js";
+const LIST = [];   // {cert_no, base, name, course, module, grade, issue_date, file, bytes, dup}
+function isoDate(d) { const m = (d || "").match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/); return m ? `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : d; }
+function certBase(raw, iso) { const n = norm(raw); return /^\d+$/.test(n) ? `${PREFIX}-${(iso || "").slice(0, 4) || new Date().getFullYear()}-${n}` : n; }
+async function readCert(bytes) {
+  const doc = await pdfjsLib.getDocument({ data: bytes.slice(0) }).promise;
+  const page = await doc.getPage(1);
+  const items = (await page.getTextContent()).items.filter(i => i.str !== "");
+  const rows = {};
+  for (const it of items) { const y = Math.round(it.transform[5] / 3) * 3; (rows[y] = rows[y] || []).push(it); }
+  const lines = Object.keys(rows).map(Number).sort((a, b) => b - a)
+    .map(y => rows[y].sort((a, b) => a.transform[4] - b.transform[4]).map(i => i.str).join("").replace(/\s+/g, " ").trim());
+  const all = lines.join("\n");
+  const g = re => { const m = all.match(re); return m ? m[1].trim() : ""; };
+  const no = all.match(/UTCCS\s*\|\s*(\d{4})\s*\|\s*(\d+)/i);
+  const pi = lines.findIndex(l => /presented\s+to/i.test(l));
+  return {
+    cert_no: no ? `UTCCS | ${no[1]} | ${no[2]}` : "",
+    name: pi >= 0 && lines[pi + 1] ? lines[pi + 1].toUpperCase() : "",
+    course: g(/completion of the\s*["“”']\s*(.+?)\s*["“”']\s*course/i).toUpperCase(),
+    module: g(/course module\s*:\s*\(\s*(.+?)\s*\)/i).toUpperCase(),
+    issue_date: g(/date of issuance\s*:\s*(\d{1,2}[-\/.]\d{1,2}[-\/.]\d{4})/i).replace(/[\/.]/g, "-"),
+    grade: g(/grade\s*\[\s*(.+?)\s*\]/i).toUpperCase()
+  };
+}
+let ISSUED = null;   // Set of hashed cert numbers already on the website
+async function loadIssued() {
+  if (ISSUED || !store.get("utech_gh")) return;
+  try { const { db } = await getDB(); ISSUED = new Set(db.issued); } catch { ISSUED = null; }
+}
+async function addItem(c, file, bytes) {
+  const base = certBase(c.cert_no, isoDate(c.issue_date));
+  if (LIST.some(x => x.base === base)) return `• ${esc(c.cert_no)} is already in the list.`;
+  const dup = ISSUED ? ISSUED.has(await sha("UTECH-NO|" + base)) : false;
+  LIST.push({ ...c, base, file, bytes, dup });
+  return "";
+}
+async function importPdfs(files) {
+  $("#readMsg").textContent = "Reading…";
+  await loadIssued();
+  const msgs = [];
+  for (const f of files) {
+    try {
+      const bytes = new Uint8Array(await f.arrayBuffer());
+      const c = await readCert(bytes);
+      const miss = ["cert_no", "name", "course", "issue_date"].filter(k => !c[k]);
+      if (miss.length) { msgs.push(`✘ ${esc(f.name)}: couldn't read ${miss.join(", ")} — use “Add a student without a PDF”.`); continue; }
+      const m = await addItem(c, f.name, bytes); if (m) msgs.push(m);
+    } catch { msgs.push(`✘ ${esc(f.name)}: not a readable PDF.`); }
+  }
+  $("#readMsg").innerHTML = msgs.join("<br>");
+  render();
+}
+$("#pdfs").addEventListener("change", e => { importPdfs([...e.target.files]); e.target.value = ""; });
+const dz = $("#drop");
+["dragenter", "dragover"].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add("over"); }));
+["dragleave", "drop"].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove("over"); }));
+dz.addEventListener("drop", e => importPdfs([...e.dataTransfer.files].filter(f => /pdf$/i.test(f.name))));
+
+try { $("#f_date").valueAsDate = new Date(); } catch {}
+$("#addManual").onclick = async () => {
+  const v = id => $(id).value.trim(), d = v("#f_date");
+  if (!v("#f_no") || !v("#f_name") || !v("#f_course") || !d) { alert("Certificate No., name, course and date are required."); return; }
+  await loadIssued();
+  const [y, m, dd] = d.split("-");
+  const msg = await addItem({ cert_no: v("#f_no"), name: v("#f_name").toUpperCase(), course: v("#f_course").toUpperCase(), module: v("#f_module").toUpperCase(), grade: v("#f_grade").toUpperCase(), issue_date: `${dd}-${m}-${y}` }, null, null);
+  if (msg) alert(msg.replace(/<[^>]+>|•/g, ""));
+  const n = parseInt(v("#f_no"), 10); $("#f_no").value = isNaN(n) ? "" : n + 1; $("#f_name").value = ""; $("#f_grade").value = "";
+  render();
+};
+
+function render() {
+  $("#tbl").classList.toggle("hidden", !LIST.length);
+  $("#tb").innerHTML = LIST.map((c, i) => `<tr><td><code>${esc(c.base.split("-").slice(1).join(" | "))}</code></td><td>${esc(c.name)}</td><td>${esc(c.course)}</td><td>${esc(c.grade || "-")}</td><td>${esc(c.issue_date)}</td>
+    <td>${c.dup ? '<span class="tag dup" title="This certificate number is already on the website. Issuing again creates a second, different QR.">Already issued</span>' : '<span class="tag new">New</span>'}${c.bytes ? "" : ' <span class="tag" style="background:#eee">badge only</span>'}</td>
+    <td class="x" data-i="${i}" title="Remove">✕</td></tr>`).join("");
+  $("#tb").querySelectorAll(".x").forEach(x => x.onclick = () => { LIST.splice(+x.dataset.i, 1); render(); });
+  const n = LIST.filter(c => !c.dup).length, d = LIST.length - n;
+  $("#issue").disabled = !n;
+  $("#issue").textContent = n ? `Issue ${n} certificate${n > 1 ? "s" : ""}` + (d ? `  (skipping ${d} already issued)` : "") : (d ? "All already issued" : "Issue certificates");
+}
+
+// ---------- Badge & stamping ----------
+const ALPH = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const newCode = () => [...crypto.getRandomValues(new Uint8Array(6))].map(x => ALPH[x % 32]).join("");
+function badge(o, W = 800) {
+  const q = qrcode(0, "M"); q.addData(o.url); q.make();
+  const n = q.getModuleCount(), pad = Math.round(W * .07), cell = Math.floor((W - pad * 2) / n), qs = cell * n, H = Math.round(W * 1.32);
+  const c = document.createElement("canvas"); c.width = W; c.height = H;
+  const g = c.getContext("2d"), r = W * .06;
+  const rr = (x, y, w, h, rad) => { g.beginPath(); g.moveTo(x + rad, y); g.arcTo(x + w, y, x + w, y + h, rad); g.arcTo(x + w, y + h, x, y + h, rad); g.arcTo(x, y + h, x, y, rad); g.arcTo(x, y, x + w, y, rad); g.closePath(); };
+  rr(0, 0, W, H, r); g.fillStyle = "#3B1E6E"; g.fill();
+  const bw = W * .025; rr(bw, bw, W - bw * 2, H - bw * 2, r * .75); g.fillStyle = "#fff"; g.fill();
+  const qx = (W - qs) / 2, qy = pad * 1.1; g.fillStyle = "#1a0f33";
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (q.isDark(y, x)) g.fillRect(qx + x * cell, qy + y * cell, cell, cell);
+  let y = qy + qs + W * .1; g.textAlign = "center"; g.fillStyle = "#3B1E6E";
+  g.font = `700 ${W * .075}px Inter, Arial, sans-serif`; g.fillText("SCAN TO VERIFY", W / 2, y);
+  y += W * .03; g.fillStyle = "#C9A227"; g.fillRect(W * .3, y, W * .4, W * .008);
+  y += W * .075; g.fillStyle = "#1d1a24"; g.font = `700 ${W * .062}px "JetBrains Mono", monospace`; g.fillText(o.cert_no, W / 2, y);
+  y += W * .065; g.fillStyle = "#6b6577"; g.font = `500 ${W * .048}px "JetBrains Mono", monospace`; g.fillText("CODE: " + o.code, W / 2, y);
+  return c;
+}
+const canvasBytes = c => Uint8Array.from(atob(c.toDataURL("image/png").split(",")[1]), ch => ch.charCodeAt(0));
+async function stamp(o) {
+  const pdf = await PDFLib.PDFDocument.load(o.bytes);
+  const page = pdf.getPages()[0], { width: W, height: H } = page.getSize();
+  const png = await pdf.embedPng(canvasBytes(badge(o, 800)));
+  const w = W * 0.0831, h = w * png.height / png.width, cx = W * 0.1912, bottom = H * 0.826;
+  page.drawRectangle({ x: W * 0.159, y: H - H * 0.8425, width: W * 0.064, height: H * 0.097, color: PDFLib.rgb(1, 1, 1) });   // hide small crest
+  page.drawImage(png, { x: cx - w / 2, y: H - bottom, width: w, height: h });
+  pdf.setSubject("Verify: " + o.url);
+  return pdf.save();
+}
+async function seal(id, data) {
+  const key = await sha("UTECH-LOOKUP|" + id);
+  const k = await crypto.subtle.importKey("raw", await crypto.subtle.digest("SHA-256", enc("UTECH-KEY|" + id)), "AES-GCM", false, ["encrypt"]);
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  return [key, { iv: b64(iv), ct: b64(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, k, enc(JSON.stringify(data)))) }];
+}
+function download(name, blob) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
+const csvQ = v => /[",\n]/.test(v) ? `"${String(v).replace(/"/g, '""')}"` : v;
+
+// ---------- Issue ----------
+let LAST = [];
+async function makeZip(out) {
+  const z = new JSZip(), day = new Date().toISOString().slice(0, 10);
+  for (const o of out) {
+    const fn = `${o.base.split("-").pop()}_${o.name.replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "_")}`;
+    if (o.bytes) z.file(fn + "_QR.pdf", await stamp(o));
+    else z.file(fn + "_QR-badge.png", canvasBytes(badge(o, 1000)));
+  }
+  const h = ["cert_no", "code", "name", "course", "module", "grade", "issue_date", "url"];
+  z.file(`Master_list_${day}.csv`, "\uFEFF" + [h.join(","), ...out.map(o => h.map(k => csvQ(o[k] ?? "")).join(","))].join("\r\n"));
+  const zipName = `Certificates_${day}_${out.map(o => o.base.split("-").pop()).join("-").slice(0, 40)}.zip`;
+  download(zipName, await z.generateAsync({ type: "blob" }));
+  return zipName;
+}
+const step = (s, cls) => { const li = $(`#steps li[data-s="${s}"]`); li.className = cls; if (cls === "on") li.dataset.t = li.textContent; };
+$("#issue").onclick = async () => {
+  if (!store.get("utech_gh")) { showSetup(true); window.scrollTo(0, 0); return; }
+  const todo = LIST.filter(c => !c.dup); if (!todo.length) return;
+  $("#issue").disabled = true; $("#steps").classList.remove("hidden"); $("#result").innerHTML = "";
+  $("#steps").querySelectorAll("li").forEach(li => li.className = "");
+  let cur = "db";
+  try {
+    let out = [];
+    for (let attempt = 0; attempt < 3; attempt++) {
+      cur = "db"; step("db", "on");
+      const { db, sha: shaPrev } = await getDB(); step("db", "done");
+      cur = "enc"; step("enc", "on");
+      out = [];
+      for (const c of todo) {
+        c.code = c.code || newCode();                 // same code if we retry
+        const id = `${c.base}-${c.code}`;
+        const data = { name: c.name, course: c.course, module: c.module || "", grade: c.grade || "", issue_date: isoDate(c.issue_date), status: "valid" };
+        const [k, v] = await seal(id, data);
+        db.records[k] = v;
+        const h = await sha("UTECH-NO|" + c.base); if (!db.issued.includes(h)) db.issued.push(h);
+        out.push({ ...c, id, cert_no: c.base.split("-").join(" | "), url: SITE + "?id=" + id });
+      }
+      db.updated = new Date().toISOString(); db.version = 2; step("enc", "done");
+      cur = "pub"; step("pub", "on");
+      try { await putDB(db, shaPrev, "Issue certificates " + todo.map(c => c.base.split("-").pop()).join(", ")); step("pub", "done"); break; }
+      catch (e) { if (e.message !== "RETRY" || attempt === 2) throw e; }
+    }
+    cur = "pdf"; step("pdf", "on");
+    for (const o of todo) o.dup = true;   // published: never issue these twice
+    LAST = out; ISSUED = null; render();
+    const zipName = await makeZip(out);
+    step("pdf", "done");
+    $("#result").innerHTML = `<div class="done-box"><b>✔ ${out.length} certificate${out.length > 1 ? "s" : ""} issued.</b> Finished certificates downloaded as <code>${esc(zipName)}</code>.<br>
+      The QR codes start working in about <b>2 minutes</b> (website update). Check:<br>${out.map(o => `• <a href="${o.url}" target="_blank">${esc(o.cert_no)} — ${esc(o.name)}</a>`).join("<br>")}</div>`;
+  } catch (e) {
+    step(cur, "err");
+    if (cur === "pdf") {
+      $("#result").innerHTML = `<div class="err-box">✘ Certificates were published, but preparing the PDFs failed (${esc(e.message || e)}).<br><button id="again" style="margin-top:8px">Download certificates again</button></div>`;
+      $("#again").onclick = async () => { try { await makeZip(LAST); step("pdf", "done"); $("#result").innerHTML = '<div class="done-box">✔ Downloaded.</div>'; } catch (e2) { alert(e2.message || e2); } };
+    } else {
+      $("#result").innerHTML = `<div class="err-box">✘ ${esc(e.message || e)}<br>Nothing was published, so you can safely try again.</div>`;
+      $("#issue").disabled = false;
+    }
+  }
+};
+render();
+</script>
+</body>
+</html>
