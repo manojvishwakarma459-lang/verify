@@ -1,11 +1,15 @@
 {
  "issuer": "U-TECH CAD CAM Solutions",
  "version": 1,
- "updated": "2026-10-26T19:52:45.954Z",
+ "updated": "2026-10-27T06:46:35.146Z",
  "records": {
   "72cc3b8c2cf533b7857308d5d01b1271e82b4f8b04996e995644ceebc859ca3f": {
    "iv": "6KcHouxm7COxnQZU",
    "ct": "BY9NDQVApFYNp8zKWJNmEt92rEasRsbMmCrKk95umtVPA+r2YrcEoy9UKp1CO2hNVmjodMplvUwLfZG4tfGZ6+2H3Rupe8194DBLryVTpEM63czwfOrm22ft2IgUpb+HcmpGfWlRxutBYNpDMNR1HTlZfuRzw4CtQEw2sIQHA1v5f+qNpTuUmvOeubKTTwlFDEK45CWeL098zbsI6P2fvIZSXIbvbQ9Z1mrj8g9MX83fgiY/rX0h8a/1TmPiwv1zFk4HQA6W1AzNdWM+"
+  },
+  "49444b6286166205282a33142ddd5ca86254188c525e794aa6519145df7d991b": {
+   "iv": "9QlBX2IzkWfIkC1h",
+   "ct": "8bKU5ogvMIh3zzgeV7Y+kwFmWp7B6Sl3rXhs81RfK5hn7HLMsjvzuhOv/shUNc4faZzLVXofOj/jhfhcvUre21P3PeqbU3Xi7PIWpnlPM+xb2NdPekYMQ5KTpl+iQDpCdOrqthMTb96wC7iVvcCChHH9817KXRIAmOzba5BN0VA9whM41EBJvzV3y4ZVUE4pNeRPWrAp9susgE75cxYeuV/FvzgAqdX7my1kwrLAqW34cMzmnQH02GmSNhMPW799YBsX9DD+W1Bc1ZgOFyGTl8ImsM6ZhsBp"
   }
  }
 }
