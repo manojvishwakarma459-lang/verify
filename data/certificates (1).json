@@ -1,0 +1,11 @@
+{
+ "issuer": "U-TECH CAD CAM Solutions",
+ "version": 1,
+ "updated": "2026-10-27T07:02:19.362Z",
+ "records": {
+  "fcbaf29bbe2a99ac9f0e552a08b7fd29e1e3ea369b228f8de295ce2198503194": {
+   "iv": "vaEhpgw8bVw2uz+B",
+   "ct": "reMJ8VzmSEK0/6DKT3JhQhMFQLmK9aUB+gYyzq0xQMhwz2U+tBCsHrhC3/BEo2n65HJrZZlqohrjxJJK3nciDYvhI3CRFJxonIpyEtEQB1HykPM100zpAh1tvXcMRga3uoxWDMA04bhdgTRAf48u503zgLRLfWdPo6p77ZdcjIz5gXsKhxorAnVGaQTuHNZL6OqeIQiq7bisQGWPIM8UZkZa3Rlrpgzrgi7e+NMlPGvTO6QpahLcJcOnNnP7RnJ2b69kxoqvdf31TXjxPy4gXeeU23G8IX1A"
+  }
+ }
+}
