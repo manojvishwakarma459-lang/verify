@@ -184,8 +184,8 @@ async function readCert(bytes) {
   return {
     cert_no: no ? `UTCCS | ${no[1]} | ${no[2]}` : "",
     name: pi >= 0 && lines[pi + 1] ? lines[pi + 1].toUpperCase() : "",
-    course: g(/completion of the\s*["“”']\s*(.+?)\s*["“”']\s*course/i).toUpperCase(),
-    module: g(/course module\s*:\s*\(\s*(.+?)\s*\)/i).toUpperCase(),
+    course: (g(/completion of the\s*["“”']\s*(.+?)\s*["“”']\s*course/i) || g(/completion of the\s+(.+?)\s*(?:course\.?)?\s*$/im)).replace(/^["“”']+|["“”'.]+$/g, "").trim().toUpperCase(),
+    module: g(/course module\s*:\s*\(\s*(.+?)\s*\)/i).replace(/\s*-\s*/g, " - ").replace(/\s+/g, " ").toUpperCase(),
     issue_date: g(/date of issuance\s*:\s*(\d{1,2}[-\/.]\d{1,2}[-\/.]\d{4})/i).replace(/[\/.]/g, "-"),
     grade: g(/grade\s*\[\s*(.+?)\s*\]/i).toUpperCase()
   };
