@@ -172,7 +172,13 @@ function certBase(raw, iso) { const n = norm(raw); return /^\d+$/.test(n) ? `${P
 async function readCert(bytes) {
   const doc = await pdfjsLib.getDocument({ data: bytes.slice(0) }).promise;
   const page = await doc.getPage(1);
-  const items = (await page.getTextContent()).items.filter(i => i.str !== "");
+  const seen = new Set();   // Canva stacks text effects as duplicate layers — keep one copy
+  const items = (await page.getTextContent()).items.filter(i => {
+    if (i.str === "") return false;
+    if (!i.str.trim()) return true;
+    const k = i.str + "@" + Math.round(i.transform[4] / 4) + "," + Math.round(i.transform[5] / 4);
+    if (seen.has(k)) return false; seen.add(k); return true;
+  });
   const rows = {};
   for (const it of items) { const y = Math.round(it.transform[5] / 3) * 3; (rows[y] = rows[y] || []).push(it); }
   const lines = Object.keys(rows).map(Number).sort((a, b) => b - a)
@@ -184,8 +190,8 @@ async function readCert(bytes) {
   return {
     cert_no: no ? `UTCCS | ${no[1]} | ${no[2]}` : "",
     name: pi >= 0 && lines[pi + 1] ? lines[pi + 1].toUpperCase() : "",
-    course: (g(/completion of the\s*["“”']\s*(.+?)\s*["“”']\s*course/i) || g(/completion of the\s+(.+?)\s*(?:course\.?)?\s*$/im)).replace(/^["“”']+|["“”'.]+$/g, "").trim().toUpperCase(),
-    module: g(/course module\s*:\s*\(\s*(.+?)\s*\)/i).replace(/\s*-\s*/g, " - ").replace(/\s+/g, " ").toUpperCase(),
+    course: (g(/completion of the\s*["“”']\s*(.+?)\s*["“”']\s*course/i) || g(/completion of the\s+(.+?)\s*(?:course\.?)?\s*$/im)).replace(/^["“”']+|["“”'.]+$/g, "").replace(/\s*\|\s*/g, " | ").trim().toUpperCase(),
+    module: g(/course module\s*:\s*\(\s*([\s\S]+?)\s*\)/i).replace(/\s+/g, " ").replace(/\s*\|\s*/g, " | ").replace(/\s*-\s*/g, " - ").replace(/\s+/g, " ").trim().toUpperCase(),
     issue_date: g(/date of issuance\s*:\s*(\d{1,2}[-\/.]\d{1,2}[-\/.]\d{4})/i).replace(/[\/.]/g, "-"),
     grade: g(/grade\s*\[\s*(.+?)\s*\]/i).toUpperCase()
   };
