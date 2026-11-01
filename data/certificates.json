@@ -1,7 +1,7 @@
 {
  "issuer": "U-TECH CAD CAM Solutions",
  "version": 2,
- "updated": "2026-11-01T19:10:00.000Z",
+ "updated": "2026-11-01T19:20:00.000Z",
  "records": {
   "1009fae70aac180a571bc3aecf5defdafc55aaeccc8427a04effb4de0f147dca": {
    "iv": "p9DRwFdbrxI1zAqF",
@@ -59,13 +59,13 @@
    "iv": "+kXkKa7n45pb7h26",
    "ct": "4apK9HwZu3fwlRRf2KHyKZLN7MX9N4Lg7SHZfo/UEqrBh/R+upmvTGpNEyLfdr2cdWY80I0YEIy3ZfDxZQCSIQgiZZY16TXGWpwEjzgyE12SaqA2r8Z2VR4Y23wIRR6Dy+kPuSg6o/vJhGS9G6Z4p8i+emzpienFE27F1Efg6gJ9Wsn9rnE2cOOyBEs5mDlFNi8qAoPS9qbaNUHhompyia/RGKSQgTq5HO7QWOkCzfh3Sbm4ljtCd8FqqNyVb/YoLA=="
   },
-  "7dd1e956f0a246d6983f227f2aebcf5749093ab3332e144acb40bf8cebf59a77": {
-   "iv": "ghZf1Z7R9zqI+nff",
-   "ct": "AchQP+LXbfEJ/ruSLpAvYCRDr63JSNcFZ2NEW9bxyP0WrAtMpf+eXaoudVhspsfeeL5MTvSfRffEhBm9X9itPIHnttsVe/I6Ek2BUjJbZ//77cctyHPzPfi46uNG+5O6wGRkXbV1vnrU5XSgO/dSQ33QXfglEIj/X+1IAVMGWOhe5LvaCXniVqa8k1DLKFw7rtUCcasJoPjnzUSOWki2wCaadOf+MuU+T/QwlZFG2CocoB87pTFn8SVIssjmdL+m"
-  },
   "72cc3b8c2cf533b7857308d5d01b1271e82b4f8b04996e995644ceebc859ca3f": {
-   "iv": "6KcHouxm7COxnQZU",
-   "ct": "BY9NDQVApFYNp8zKWJNmEt92rEasRsbMmCrKk95umtVPA+r2YrcEoy9UKp1CO2hNVmjodMplvUwLfZG4tfGZ6+2H3Rupe8194DBLryVTpEM63czwfOrm22ft2IgUpb+HcmpGfWlRxutBYNpDMNR1HTlZfuRzw4CtQEw2sIQHA1v5f+qNpTuUmvOeubKTTwlFDEK45CWeL098zbsI6P2fvIZSXIbvbQ9Z1mrj8g9MX83fgiY/rX0h8a/1TmPiwv1zFk4HQA6W1AzNdWM+"
+   "iv": "kT5AaeljPrECm8DS",
+   "ct": "ZPDA3E5RBl4q/+02rmoqbmVRMfbuPbk5UUE2vZiZoT4YCSGWhtzo1wNgSmHwfI++CSxk1HIJRXgLk8TVWQd5Op6qeAqwtDCgqXCD0lM09JmJnN4TPg/1MCQSli2ysvC+U6kL0BwkyeMr8oPZSal4ewUABDpW67CT4zFPLO9xKdCvMi6xhidOZe9QVizu9qigRkxQ0rVcJ7HjIKZHvBK4mC0tzMDmej13InNLKrpmD2aECKi7WEsyQsDM7/XW5d4kRzidkgnEDwFhRosJry4WaB3rIAzaIXFwyK+jgBLt6l+czJ1vfx4BrW4m6QU="
+  },
+  "957e915e0c60bc4367286a6e4b3fc338d9de47f0414967edcdf6e1776314172f": {
+   "iv": "Az5V7WJuiYIWTlCW",
+   "ct": "mn34gdnucwzwOSC+18C4N/03vkMVd4JKIJrKY4y/zpTAM/PFuYSDbrC8ctlxc8Z8qF0ZRSgxY6ed9k2VcFuBhi7mFvLqEpZbnLvPqOcqAHjCggjXDcwj20TnlzaqGUtZFDAgED+j7OLsu2nInnuqZa0a42/LTV3gDAveTNGzZ0uscOwDBco/m7h8jCZUbKH9TybmDK6HbM19uS/HTGsm61i7/XWpfSmWE+lbd/70nFe34VNPlH5qNLjiCC32pz5XruRePS7UcMfJYyw1jfSHhbzVKO0Zxq+b9flJf+3H2xxtr/DaXsQNwUjACWI="
   }
  },
  "issued": [
@@ -83,7 +83,6 @@
   "5c9a3466877f48c0cc5b555c2118d6add6aaba70a0b6f8db85d8bd216f566a41",
   "2f45116a619387f7434d52c8fd29e806ecd6ce7f81ed406b459d0380de1a1971",
   "b9762023e8189d478a2bf09f6582fdd900612860d43ec8af45aeff787d1d76b1",
-  "9814468d0c3f1d7d0672d792b752b9284f45cb09b32eb965634f631d0a5bc2de",
-  "308f2f9f94b7c8a18f94f2d40bc64932020c2842a7bd7720d755fce27cc05917"
+  "9814468d0c3f1d7d0672d792b752b9284f45cb09b32eb965634f631d0a5bc2de"
  ]
 }
