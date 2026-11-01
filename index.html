@@ -136,7 +136,7 @@ async function verify(raw) {
   }
   const revoked = (c.status || "").toLowerCase() === "revoked";
   const rows = [
-    ["Certificate No.", `<span class="mono-txt">${esc(certNo(id))}</span>`],
+    ["Certificate No.", `<span class="mono-txt">${esc(c.cert_no || certNo(id))}</span>`],
     vcode(id) && ["Verification Code", `<span class="mono-txt">${esc(vcode(id))}</span>`],
     ["Course", esc(c.course)],
     c.module && ["Course Module", esc(c.module)],
